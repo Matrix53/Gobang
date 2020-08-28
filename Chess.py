@@ -20,6 +20,9 @@ pieceStack:
 playerName:
     The name of a player. Only used in PVP mode.
 
+screen:
+    The screen surface. Length:900 Height:600
+
 '''
 class Chess:
     #initialize the board
