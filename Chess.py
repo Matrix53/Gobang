@@ -30,50 +30,79 @@ dotSequence:
 other settings:
     Board size:15*15  Grid length:39  Piece radius:14
     Top margin length:27  Left margin length:54  Gridlines' thickness:2
+    Background Color:(255,128,64)
 
 '''
 class Chess:
     #initialize the board
-    def __init__(self):
+    def __init__(self,screenSurface):
         self.board=[[0 for i in range(0,15)] for j in range(0,15)]
         self.pieceStack=[]
         self.dotSequence=[(i//2*39+54,573 if (i%4==1 or i%4==2) else 27) for i in range(0,30)]
         self.dotSequence+=[(54 if (i%4==1 or i%4==2) else 600,573-i//2*39) for i in range(0,30)]
+        self.screen=screenSurface
 
-    def drawBoard(self,screen):
-        pygame.draw.lines(screen,pygame.Color('black'),False,self.dotSequence,2)
+    def drawBoard(self):
+        pygame.draw.lines(self.screen,pygame.Color('black'),False,self.dotSequence,2)
         pygame.display.update()
 
     def drawPiece(self,pos,player):
-        pass
+        if player==0:
+            return
+        elif player==1:
+            pygame.draw.circle(self.screen,pygame.Color('black'),pos,14)
+        else:
+            pygame.draw.circle(self.screen,pygame.Color('white'),pos,14)
+        pygame.display.update()
     
     def drawAllPieces(self):
-        pass
+        for x in range(0,15):
+            for y in range(0,15):
+                self.drawPiece((x,y),self.board[x][y])
 
     def drawPlayer(self,player,playerName=''):
-        pass
+        font=pygame.font.SysFont('华文行楷',30)
+
+        if player==1:
+            promptText=font.render('轮到黑方行棋',True,pygame.Color('black'))
+        else:
+            promptText=font.render('轮到白方行棋',True,pygame.Color('white'))
+        self.screen.blit(promptText,(650,27))
+
+        if playerName!='':
+            nameText=font.render('玩家:'+playerName,True,pygame.Color('blue'))
+            self.screen.blit(nameText,(650,67))
+
+        pygame.display.update()
 
     #fill background with special brown
-    def drawBackground(self,screen):
-        screen.fill((255,128,64))
+    def drawBackground(self):
+        self.screen.fill((255,128,64))
         pygame.display.update()
     
     def isWinner(self,pos):
         pass
 
     def dropPiece(self,pos,player):
-        pass
+        self.pieceStack.append(pos)
+        self.board[pos[0]][pos[1]]=player
+        self.drawPiece(pos,player)
 
     def undoDrop(self):
-        pass
+        pos=self.pieceStack.pop()
+        self.board[pos[0]][pos[1]]=0
+        pygame.draw.circle(self.screen,(255,128,64),pos,14)
+        pygame.draw.line(self.screen,pygame.Color('black'),(pos[0]-14,pos[1]),(pos[0]+14,pos[1]),2)
+        pygame.draw.line(self.screen,pygame.Color('black'),(pos[0],pos[1]-14),(pos[0],pos[1]+14),2)
+        pygame.display.update()
 
 #The function is used to test the Chess Class
 def unitTest():
     pygame.init()
     screen=pygame.display.set_mode((900,600))
-    chess=Chess()
-    chess.drawBackground(screen)
-    chess.drawBoard(screen)
+    chess=Chess(screen)
+    chess.drawBackground()
+    chess.drawBoard()
 
     while True:
         for event in pygame.event.get():
