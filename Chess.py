@@ -1,4 +1,5 @@
 import pygame
+import sys
 
 '''
 Class Chess is used to represent the game, and here're some settings.
@@ -18,10 +19,17 @@ pieceStack:
     A stack of pos. The stack is used to record the game and implement undoing a drop.
 
 playerName:
-    The name of a player. Only used in PVP mode.
+    The name of a player. Only be used in PVP mode.
 
 screen:
     The screen surface. Length:900 Height:600
+
+dotSequence:
+    A list of pos. Only be used to draw the board.
+
+other settings:
+    Board size:15*15  Grid length:39  Piece radius:14
+    Top margin length:27  Left margin length:54  Gridlines' thickness:2
 
 '''
 class Chess:
@@ -29,11 +37,14 @@ class Chess:
     def __init__(self):
         self.board=[[0 for i in range(0,15)] for j in range(0,15)]
         self.pieceStack=[]
+        self.dotSequence=[(i//2*39+54,573 if (i%4==1 or i%4==2) else 27) for i in range(0,30)]
+        self.dotSequence+=[(54 if (i%4==1 or i%4==2) else 600,573-i//2*39) for i in range(0,30)]
 
-    def drawBoard(self):
-        pass
+    def drawBoard(self,screen):
+        pygame.draw.lines(screen,pygame.Color('black'),False,self.dotSequence,2)
+        pygame.display.update()
 
-    def drawPiece(self,pos):
+    def drawPiece(self,pos,player):
         pass
     
     def drawAllPieces(self):
@@ -45,6 +56,7 @@ class Chess:
     #fill background with special brown
     def drawBackground(self,screen):
         screen.fill((255,128,64))
+        pygame.display.update()
     
     def isWinner(self,pos):
         pass
@@ -57,7 +69,17 @@ class Chess:
 
 #The function is used to test the Chess Class
 def unitTest():
-    pass
+    pygame.init()
+    screen=pygame.display.set_mode((900,600))
+    chess=Chess()
+    chess.drawBackground(screen)
+    chess.drawBoard(screen)
+
+    while True:
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                sys.exit()
+        pygame.display.update()
 
 if __name__=='__main__':
     unitTest()
