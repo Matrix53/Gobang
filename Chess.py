@@ -80,8 +80,74 @@ class Chess:
         self.screen.fill((255,128,64))
         pygame.display.update()
     
+    #if player in pos wins, return True, else return False
+    #Winning the game requires 5 pieces in the same color row in one line
+    #search from (left,top) to (right,down) to judge whether the player wins
     def isWinner(self,pos):
-        pass
+        #find the scope
+        x,y=pos
+        player=self.board[x][y]
+        top,down=max(0,y-4),min(14,y+4)
+        left,right=max(0,x-4),min(14,x+4)
+
+        #case1:search from (pos[0],top) to (pos[0],down)
+        y,cnt=top,0
+        while y<=down:
+            if self.board[x][y]==player:
+                cnt+=1
+            else:
+                cnt=0
+            if cnt==5:
+                return True
+            y+=1
+        
+        #case2:search from (left,pos[1]) to (right,pos[1])
+        x,y,cnt=left,pos[1],0
+        while x<=right:
+            if self.board[x][y]==player:
+                cnt+=1
+            else:
+                cnt=0
+            if cnt==5:
+                return True
+            x+=1
+        
+        #case3:search from lefttop to rightdown and assure the searching scope is a square
+        deltaX,deltaY=pos[0]-left,pos[1]-top
+        if deltaX<deltaY:
+            x,y,cnt=left,pos[1]-deltaX,0
+        else:
+            x,y,cnt=pos[0]-deltaY,top,0
+
+        while x<=right and y<=down:
+            if self.board[x][y]==player:
+                cnt+=1
+            else:
+                cnt=0
+            if cnt==5:
+                return True
+            x+=1
+            y+=1
+
+        #case4:search from leftdown to righttop and assure the searching scope is a square
+        deltaX,deltaY=pos[0]-left,down-pos[1]
+        if deltaX<deltaY:
+            x,y,cnt=left,pos[1]+deltaX,0
+        else:
+            x,y,cnt=pos[0]-deltaY,down,0
+
+        while x<=right and y>=top:
+            if self.board[x][y]==player:
+                cnt+=1
+            else:
+                cnt=0
+            if cnt==5:
+                return True
+            x+=1
+            y-=1
+
+        #case5:The player doesn't win
+        return False
 
     def dropPiece(self,pos,player):
         self.pieceStack.append(pos)
