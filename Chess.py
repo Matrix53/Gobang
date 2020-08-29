@@ -38,7 +38,7 @@ other settings:
 '''
 class Chess:
     #initialize the board
-    def __init__(self,screenSurface):
+    def __init__(self,screenSurface=None):
         self.board=[[0 for i in range(0,15)] for j in range(0,15)]
         self.pieceStack=[]
         self.dotSequence=[(i//2*39+54,573 if (i%4==1 or i%4==2) else 27) for i in range(0,30)]
@@ -49,23 +49,25 @@ class Chess:
         pygame.draw.lines(self.screen,pygame.Color('black'),False,self.dotSequence,2)
         pygame.display.update()
 
-    def drawPiece(self,pos,player):
+    def drawPiece(self,screenPos,player):
         if player==0:
             return
         elif player==1:
-            pygame.draw.circle(self.screen,pygame.Color('black'),pos,14)
+            pygame.draw.circle(self.screen,pygame.Color('black'),screenPos,14)
         else:
-            pygame.draw.circle(self.screen,pygame.Color('white'),pos,14)
+            pygame.draw.circle(self.screen,pygame.Color('white'),screenPos,14)
         pygame.display.update()
     
     def drawAllPieces(self):
         for x in range(0,15):
             for y in range(0,15):
-                self.drawPiece((x,y),self.board[x][y])
+                screenPos=self.findPosInScreen(x,y)
+                self.drawPiece(screenPos,self.board[x][y])
 
     def drawPlayer(self,player,playerName=''):
         font=pygame.font.SysFont('华文行楷',30)
 
+        pygame.draw.rect(self.screen,(255,128,64),pygame.Rect(650,27,180,30))
         if player==1:
             promptText=font.render('轮到黑方行棋',True,pygame.Color('black'))
         else:
@@ -75,6 +77,21 @@ class Chess:
         if playerName!='':
             nameText=font.render('玩家:'+playerName,True,pygame.Color('blue'))
             self.screen.blit(nameText,(650,67))
+
+        pygame.display.update()
+
+    def drawWinner(self,player,playerName=''):
+        font=pygame.font.SysFont('华文行楷',100)
+        if player==1:
+            winnerText=font.render('黑方胜',True,pygame.Color('red'))
+        else:
+            winnerText=font.render('白方胜',True,pygame.Color('red'))
+        self.screen.blit(winnerText,(177,127))
+
+        if playerName!='':
+            font=pygame.font.SysFont('华文行楷',40)
+            playerText=font.render('玩家:'+playerName,True,pygame.Color('blue'))
+            self.screen.blit(playerText,(177,237))
 
         pygame.display.update()
 
@@ -155,14 +172,16 @@ class Chess:
     def dropPiece(self,pos,player):
         self.pieceStack.append(pos)
         self.board[pos[0]][pos[1]]=player
-        self.drawPiece(pos,player)
+        screenPos=self.findPosInScreen(pos)
+        self.drawPiece(screenPos,player)
 
     def undoDrop(self):
         pos=self.pieceStack.pop()
         self.board[pos[0]][pos[1]]=0
-        pygame.draw.circle(self.screen,(255,128,64),pos,14)
-        pygame.draw.line(self.screen,pygame.Color('black'),(pos[0]-14,pos[1]),(pos[0]+14,pos[1]),2)
-        pygame.draw.line(self.screen,pygame.Color('black'),(pos[0],pos[1]-14),(pos[0],pos[1]+14),2)
+        x,y=self.findPosInScreen(pos)
+        pygame.draw.circle(self.screen,(255,128,64),(x,y),14)
+        pygame.draw.line(self.screen,pygame.Color('black'),(x-14,y),(x+14,y),2)
+        pygame.draw.line(self.screen,pygame.Color('black'),(x,y-14),(x,y+14),2)
         pygame.display.update()
     
     def isInBoard(self,screenPos):
@@ -176,6 +195,10 @@ class Chess:
     def findPosInBoard(self,screenPos):
         x,y=screenPos
         return (round((x-54)/39),round((y-27)/39))
+
+    def findPosInScreen(self,pos):
+        x,y=pos
+        return (54+39*x,27+39*y)
 
 #The function is used to test the Chess Class
 def unitTest():
