@@ -4,9 +4,12 @@ import sys
 '''
 Class Chess is used to represent the game, and here're some settings.
 
-postion:
-    A Tuple. Represent the position of a piece, ans pos[0] is the abscissa.
+postion(pos):
+    A Tuple. Represent the position of a piece in board, and pos[0] is the abscissa.
     The origin is on the left top, and the x-axis is horizontal.
+
+screenPos:
+    A tuple. Represent the position of a pixel in screen.
 
 player:
     An integer. 1 means the black side, 2 means the white side, 0 means nothing.
@@ -161,6 +164,18 @@ class Chess:
         pygame.draw.line(self.screen,pygame.Color('black'),(pos[0]-14,pos[1]),(pos[0]+14,pos[1]),2)
         pygame.draw.line(self.screen,pygame.Color('black'),(pos[0],pos[1]-14),(pos[0],pos[1]+14),2)
         pygame.display.update()
+    
+    def isInBoard(self,screenPos):
+        x,y=screenPos
+        if x>=40 and x<=614 and y>=13 and y<=587:
+            return True
+        else:
+            return False
+
+    #In this function,screenPos must be in board
+    def findPosInBoard(self,screenPos):
+        x,y=screenPos
+        return (round((x-54)/39),round((y-27)/39))
 
 #The function is used to test the Chess Class
 def unitTest():
