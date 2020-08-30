@@ -20,7 +20,8 @@ while True:
 
             #mode:play in LAN
             if Utility.isInRect(event.pos,(115,200,395,270)):
-                pass
+                playInLAN.main()
+                startGame.main()
 
             #exit the game
             elif Utility.isInRect(event.pos,(115,300,395,370)):

@@ -42,3 +42,11 @@ These function is challenging for me to inplement because of the homework time l
 >startGame.py:just used to print the main menu
 >
 >playInOnePc.py:implement the function of playing in one PC
+>
+>playInLAN.py:implement the function of playing in LAN
+
+# Known problem
+
+> 1.(playInLAN mode)Because the program uses UDP to communicate, player may wait the opponent to operate. In this case, the program will be unresponsive.
+>
+> 2.(all mode)Because the program doesn't clear the queue of pygame.event, some unexpected operation may be left in the queue which can cause trouble.

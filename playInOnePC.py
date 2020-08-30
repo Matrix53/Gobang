@@ -37,7 +37,7 @@ def main():
                 #drop a piece
                 if chess.isInBoard(event.pos):
                     pos=chess.findPosInBoard(event.pos)
-                    if chess.board[pos[0]][pos[1]]==3-player:
+                    if chess.board[pos[0]][pos[1]]!=0:
                         continue
                     chess.dropPiece(pos,player)
                     if chess.isWinner(pos):
