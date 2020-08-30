@@ -1,7 +1,7 @@
 import pygame
 import sys
 
-#show text in the pos of screen
+#show text in the screenPos of screen
 #size:70 font:华文行楷 color:white range:(x,y) to (x+70*numOfWords,y+70)
 def showText(screen,text,screenPos,font):
     textSurface=font.render(text,True,pygame.Color('white'))
@@ -16,7 +16,8 @@ def main():
 
     font=pygame.font.SysFont('华文行楷',70)
     showText(screen,'单机对战',(115,100),font)
-    showText(screen,'退出游戏',(115,200),font)
+    showText(screen,'联机对战',(115,200),font)
+    showText(screen,'退出游戏',(115,300),font)
     
     pygame.display.update()
 

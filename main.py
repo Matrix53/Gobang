@@ -1,8 +1,10 @@
 import pygame
 import sys
+
 import Utility
 import startGame
 import playInOnePC
+import playInLAN
 
 startGame.main()
 
@@ -16,8 +18,12 @@ while True:
                 playInOnePC.main()
                 startGame.main()
 
+            #mode:play in LAN
+            if Utility.isInRect(event.pos,(115,200,395,270)):
+                pass
+
             #exit the game
-            elif Utility.isInRect(event.pos,(115,200,395,270)):
+            elif Utility.isInRect(event.pos,(115,300,395,370)):
                 sys.exit()
     
     pygame.display.update()
