@@ -17,7 +17,8 @@ def main():
     font=pygame.font.SysFont('华文行楷',70)
     showText(screen,'单机对战',(115,100),font)
     showText(screen,'联机对战',(115,200),font)
-    showText(screen,'退出游戏',(115,300),font)
+    showText(screen,'视频欣赏',(115,300),font)
+    showText(screen,'退出游戏',(115,400),font)
     
     pygame.display.update()
 

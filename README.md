@@ -37,16 +37,18 @@ These function is challenging for me to inplement because of the homework time l
 >
 >Utility.py:include some universal function
 >
->main.py:include the main function, the game starts here
+>Main.py:include the main function, the game starts here
 >
->startGame.py:just used to print the main menu
+>StartGame.py:just used to print the main menu
 >
->playInOnePc.py:implement the function of playing in one PC
+>PlayInOnePc.py:implement the function of playing in one PC
 >
->playInLAN.py:implement the function of playing in LAN
+>PlayInLAN.py:implement the function of playing in LAN
+>
+>WatchVideo.py:implement the function of watching video through browser
 
 # Known problem
 
-> 1.(playInLAN mode)Because the program uses UDP to communicate, player may wait the opponent to operate. In this case, the program will be unresponsive.
+> 1.(PlayInLAN mode)Because the program uses UDP to communicate, player may wait the opponent to operate. In this case, the program will be unresponsive.
 >
 > 2.(all mode)Because the program doesn't clear the queue of pygame.event, some unexpected operation may be left in the queue which can cause trouble.

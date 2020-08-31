@@ -5,6 +5,7 @@ import Utility
 import StartGame
 import PlayInOnePC
 import PlayInLAN
+import WatchVideo
 
 StartGame.main()
 
@@ -19,12 +20,17 @@ while True:
                 StartGame.main()
 
             #mode:play in LAN
-            if Utility.isInRect(event.pos,(115,200,395,270)):
+            elif Utility.isInRect(event.pos,(115,200,395,270)):
                 PlayInLAN.main()
                 StartGame.main()
 
-            #exit the game
+            #mode:watch video
             elif Utility.isInRect(event.pos,(115,300,395,370)):
+                WatchVideo.main()
+                StartGame.main()
+
+            #exit the game
+            elif Utility.isInRect(event.pos,(115,400,395,470)):
                 sys.exit()
     
     pygame.display.update()
