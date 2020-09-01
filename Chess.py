@@ -1,5 +1,8 @@
 import pygame
 import sys
+import os
+import sqlite3
+import datetime
 
 '''
 Class Chess is used to represent the game, and here're some settings.
@@ -30,10 +33,19 @@ screen:
 dotSequence:
     A list of pos. Only be used to draw the board.
 
+gameTime:
+    A string. Represent the time of finishing the game.
+
+dbCon:
+    The connect object between database and program.
+
+dbCur:
+    The cursor object between database and program.
+
 other settings:
     Board size:15*15  Grid length:39  Piece radius:14
     Top margin length:27  Left margin length:54  Gridlines' thickness:2
-    Background Color:(255,128,64)
+    Background Color:(255,128,64)  Database path:now\source\\record\PlayHistory.db
 
 '''
 class Chess:
@@ -44,6 +56,8 @@ class Chess:
         self.dotSequence=[(i//2*39+54,573 if (i%4==1 or i%4==2) else 27) for i in range(0,30)]
         self.dotSequence+=[(54 if (i%4==1 or i%4==2) else 600,573-i//2*39) for i in range(0,30)]
         self.screen=screenSurface
+        self.dbCon=sqlite3.connect(os.getcwd()+'\source\\record\PlayHistory.db')
+        self.dbCur=self.dbCon.cursor()
 
     def drawBoard(self):
         pygame.draw.lines(self.screen,pygame.Color('black'),False,self.dotSequence,2)
@@ -199,6 +213,48 @@ class Chess:
     def findPosInScreen(self,pos):
         x,y=pos
         return (54+39*x,27+39*y)
+
+    #Record the game into the database
+    def recordGame(self,mode,color,result):
+        self.dbCur.execute('create table if not exists history(time primary key,mode,color,result,game)')
+        gameTime=datetime.datetime.now().strftime('%F %T')
+        dotStr=self.listToStr(self.dotSequence)
+        self.dbCur.execute('insert into history values(?,?,?,?,?)',(gameTime,mode,color,result,dotStr))
+        self.dbCon.commit()
+        
+    #Read the game records from the database
+    def getGameList(self):
+        self.dbCur.execute('select time,mode,color,result from history')
+        gameList=[]
+        for record in self.dbCur:
+            gameList.append(record)
+        gameList.sort(key=lambda x:datetime.datetime.strptime(x[0],'%Y-%m-%d %H:%M:%S'))
+        return gameList
+
+    def chooseGame(self,gameTime):
+        self.dbCur.execute('select game from history where time="%s"'%gameTime)
+        for record in self.dbCur:
+            self.dotSequence=self.strToList(record[0])
+
+    def closeConnection(self):
+        self.dbCur.close()
+        self.dbCon.close()
+
+    #Convert dotSequence to string to store
+    def listToStr(self):
+        dotStr=''
+        for dot in self.dotSequence:
+            dotStr+=str(dot[0])+','+str(dot[1])+':'
+        return dotStr.strip(':')
+    
+    #Convert string to dotSequence to read
+    def strToList(self,dotStr):
+        dotSet=dotStr.split(':')
+        dotList=[]
+        for dot in dotSet:
+            x,y=map(int,dot.split(','))
+            dotList.append((x,y))
+        return dotList
 
 #The function is used to test the Chess Class
 def unitTest():

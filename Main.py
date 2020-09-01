@@ -24,13 +24,17 @@ while True:
                 PlayInLAN.main()
                 StartGame.main()
 
-            #mode:watch video
+            #mode:review history
             elif Utility.isInRect(event.pos,(115,300,395,370)):
+                pass
+            
+            #mode:watch video
+            elif Utility.isInRect(event.pos,(115,400,395,470)):
                 WatchVideo.main()
                 StartGame.main()
 
             #exit the game
-            elif Utility.isInRect(event.pos,(115,400,395,470)):
+            elif Utility.isInRect(event.pos,(115,500,395,570)):
                 sys.exit()
     
     pygame.display.update()

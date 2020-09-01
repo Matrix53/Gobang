@@ -46,6 +46,8 @@ These function is challenging for me to inplement because of the homework time l
 >PlayInLAN.py:implement the function of playing in LAN
 >
 >WatchVideo.py:implement the function of watching video through browser
+>
+>ReviewHistory.py:implement the function of reviewing the play history
 
 # Known problem
 
