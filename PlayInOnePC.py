@@ -42,6 +42,7 @@ def main():
                     chess.dropPiece(pos,player)
                     if chess.isWinner(pos):
                         chess.drawWinner(player)
+                        chess.recordGame('单机对战','黑白同机','黑方胜' if player==1 else '白方胜')
                         time.sleep(1)
                         return
                     player=3-player
@@ -60,6 +61,7 @@ def main():
                 #one side give up
                 elif Utility.isInRect(event.pos,(700,383,800,433)):
                     chess.drawWinner(3-player)
+                    chess.recordGame('单机对战','黑白同机','黑方胜' if 3-player==1 else '白方胜')
                     time.sleep(1)
                     return
                 

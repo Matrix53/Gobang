@@ -59,6 +59,11 @@ class Chess:
         self.dbCon=sqlite3.connect(os.getcwd()+'\source\\record\PlayHistory.db')
         self.dbCur=self.dbCon.cursor()
 
+    #Close the connection to database
+    def __del__(self):
+        self.dbCur.close()
+        self.dbCon.close()
+
     def drawBoard(self):
         pygame.draw.lines(self.screen,pygame.Color('black'),False,self.dotSequence,2)
         pygame.display.update()
@@ -218,32 +223,30 @@ class Chess:
     def recordGame(self,mode,color,result):
         self.dbCur.execute('create table if not exists history(time primary key,mode,color,result,game)')
         gameTime=datetime.datetime.now().strftime('%F %T')
-        dotStr=self.listToStr(self.dotSequence)
+        dotStr=self.listToStr()
         self.dbCur.execute('insert into history values(?,?,?,?,?)',(gameTime,mode,color,result,dotStr))
         self.dbCon.commit()
         
     #Read the game records from the database
     def getGameList(self):
+        self.dbCur.execute('create table if not exists history(time primary key,mode,color,result,game)')
         self.dbCur.execute('select time,mode,color,result from history')
         gameList=[]
         for record in self.dbCur:
             gameList.append(record)
         gameList.sort(key=lambda x:datetime.datetime.strptime(x[0],'%Y-%m-%d %H:%M:%S'))
+        gameList.reverse()
         return gameList
 
     def chooseGame(self,gameTime):
         self.dbCur.execute('select game from history where time="%s"'%gameTime)
         for record in self.dbCur:
-            self.dotSequence=self.strToList(record[0])
-
-    def closeConnection(self):
-        self.dbCur.close()
-        self.dbCon.close()
+            self.pieceStack=self.strToList(record[0])
 
     #Convert dotSequence to string to store
     def listToStr(self):
         dotStr=''
-        for dot in self.dotSequence:
+        for dot in self.pieceStack:
             dotStr+=str(dot[0])+','+str(dot[1])+':'
         return dotStr.strip(':')
     

@@ -6,6 +6,7 @@ import StartGame
 import PlayInOnePC
 import PlayInLAN
 import WatchVideo
+import ReviewHistory
 
 StartGame.main()
 
@@ -26,7 +27,8 @@ while True:
 
             #mode:review history
             elif Utility.isInRect(event.pos,(115,300,395,370)):
-                pass
+                ReviewHistory.main()
+                StartGame.main()
             
             #mode:watch video
             elif Utility.isInRect(event.pos,(115,400,395,470)):

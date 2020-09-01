@@ -87,14 +87,15 @@ def main():
                 if recvStr=='exit':
                     screen.fill(pygame.Color('white'))
                     Utility.showText(screen,(240,270),60,'black','对方离开了游戏')
-                    time.sleep(1)
                     mySocket.close()
+                    time.sleep(1)
                     return
                 elif recvStr=='win':
                     messagebox.showinfo('提示','对方选择认输')
                     chess.drawWinner(choice,myName)
-                    time.sleep(1)
+                    chess.recordGame('联机对战','我方执白','白方胜')
                     mySocket.close()
+                    time.sleep(1)      
                     return
                 elif recvStr=='undo':
                     admitUndo=messagebox.askyesno('提示','对方请求悔棋，是否同意?')
@@ -110,8 +111,9 @@ def main():
                     chess.dropPiece((x,y),3-choice)
                     if chess.isWinner((x,y)):
                         chess.drawWinner(3-choice,oppoName)
-                        time.sleep(1)
+                        chess.recordGame('联机对战','我方执白','黑方胜')
                         mySocket.close()
+                        time.sleep(1)
                         return
                     chess.drawPlayer(choice,myName)
                     break
@@ -135,8 +137,12 @@ def main():
                         mySocket.sendto(str(pos).strip('()').encode(),oppoAddress)
                         if chess.isWinner(pos):
                             chess.drawWinner(choice,myName)
-                            time.sleep(1)
+                            if choice==1:
+                                chess.recordGame('联机对战','我方执黑','黑方胜')
+                            else:
+                                chess.recordGame('联机对战','我方执白','白方胜')
                             mySocket.close()
+                            time.sleep(1)
                             return
                         chess.drawPlayer(3-choice,oppoName)
                         alreadyDrop=True
@@ -159,8 +165,12 @@ def main():
                     elif Utility.isInRect(event.pos,(700,383,800,433)):
                         mySocket.sendto('win'.encode(),oppoAddress)
                         chess.drawWinner(3-choice,oppoName)
-                        time.sleep(1)
+                        if choice==1:
+                            chess.recordGame('联机对战','我方执黑','白方胜')
+                        else:
+                            chess.recordGame('联机对战','我方执白','黑方胜')
                         mySocket.close()
+                        time.sleep(1)
                         return
             #break the while loop
             if alreadyDrop:
@@ -175,14 +185,15 @@ def main():
                 if recvStr=='exit':
                     screen.fill(pygame.Color('white'))
                     Utility.showText(screen,(240,270),60,'black','对方离开了游戏')
-                    time.sleep(1)
                     mySocket.close()
+                    time.sleep(1)
                     return
                 elif recvStr=='win':
                     messagebox.showinfo('提示','对方选择认输')
                     chess.drawWinner(choice,myName)
-                    time.sleep(1)
+                    chess.recordGame('联机对战','我方执黑','黑方胜')
                     mySocket.close()
+                    time.sleep(1)
                     return
                 elif recvStr=='undo':
                     admitUndo=messagebox.askyesno('提示','对方请求悔棋，是否同意?')
@@ -198,8 +209,9 @@ def main():
                     chess.dropPiece((x,y),3-choice)
                     if chess.isWinner((x,y)):
                         chess.drawWinner(3-choice,oppoName)
-                        time.sleep(1)
+                        chess.recordGame('联机对战','我方执黑','白方胜')
                         mySocket.close()
+                        time.sleep(1)
                         return
                     chess.drawPlayer(choice,myName)
                     break
