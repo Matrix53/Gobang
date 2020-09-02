@@ -3,6 +3,7 @@ import sys
 import os
 import sqlite3
 import datetime
+import random
 
 '''
 Class Chess is used to represent the game, and here're some settings.
@@ -58,6 +59,7 @@ class Chess:
         self.screen=screenSurface
         self.dbCon=sqlite3.connect(os.getcwd()+'\source\\record\PlayHistory.db')
         self.dbCur=self.dbCon.cursor()
+        self.valJudge=[]
 
     #Close the connection to database
     def __del__(self):
@@ -261,6 +263,66 @@ class Chess:
             x,y=map(int,dot.split(','))
             dotList.append((x,y))
         return dotList
+    
+    #return a pos that AI wants to drop a piece in
+    def askAIForPos(self):
+        player=len(self.pieceStack)%2+1
+        posList=[]
+        maxVal=0
+        for x in range(0,15):
+            for y in range(0,15):
+                if self.board[x][y]==0:
+                    tmpVal=self.getValOfPos((x,y),player)
+                    if tmpVal>maxVal:
+                        posList.clear()
+                        posList.append((x,y))
+                        maxVal=tmpVal
+                    elif tmpVal==maxVal:
+                        posList.append((x,y))
+        return random.choice(posList)
+
+    #return the value of pos in the opinion of AI
+    def getValOfPos(self,pos,player):
+        x,y=pos
+        sum=0
+        sum+=self.valJudge[player-1][self.getPieceStr((x,y-3),(x,y-1))]
+        sum+=self.valJudge[player-1][self.getPieceStr((x-3,y-3),(x-1,y-1))]
+        sum+=self.valJudge[player-1][self.getPieceStr((x-3,y),(x-1,y))]
+        sum+=self.valJudge[player-1][self.getPieceStr((x-3,y+3),(x-1,y+1))]
+        sum+=self.valJudge[player-1][self.getPieceStr((x,y+3),(x,y+1))]
+        sum+=self.valJudge[player-1][self.getPieceStr((x+3,y+3),(x+1,y+1))]
+        sum+=self.valJudge[player-1][self.getPieceStr((x+3,y),(x+1,y))]
+        sum+=self.valJudge[player-1][self.getPieceStr((x+3,y-3),(x+1,y-1))]
+        return sum
+
+    #get a string of pieces from pos1 to pos2
+    def getPieceStr(self,pos1,pos2):
+        ansStr=''
+        x1,y1=pos1
+        x2,y2=pos2
+        deltaX,deltaY=(x2-x1)//2,(y2-y1)//2
+        for step in range(0,3):
+            if x1<0 or x1>14 or y1<0 or y1>14:
+                ansStr+='3'
+            else:
+                ansStr+=str(self.board[x1][y1])
+            x1+=deltaX
+            y1+=deltaY
+        return ansStr
+
+    def openAI(self):
+        with open(os.getcwd()+'\source\AI\\blackSideRef.txt','r') as ref:
+            tmpDict={}
+            for line in ref:
+                pair=line.strip().split(':')
+                tmpDict[pair[0]]=int(pair[1])
+            self.valJudge.append(tmpDict)
+        with open(os.getcwd()+'\source\AI\\whiteSideRef.txt','r') as ref:
+            tmpDict={}
+            for line in ref:
+                pair=line.strip().split(':')
+                tmpDict[pair[0]]=int(pair[1])
+            self.valJudge.append(tmpDict)
 
 #The function is used to test the Chess Class
 def unitTest():
