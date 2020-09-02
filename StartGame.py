@@ -15,7 +15,8 @@ def main():
     screen.fill(pygame.Color('blue'))
 
     font=pygame.font.SysFont('华文行楷',70)
-    showText(screen,'单机对战',(115,100),font)
+    showText(screen,'单机对战',(115,0),font)
+    showText(screen,'人机对战',(115,100),font)
     showText(screen,'联机对战',(115,200),font)
     showText(screen,'历史记录',(115,300),font)
     showText(screen,'视频欣赏',(115,400),font)

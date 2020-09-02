@@ -119,6 +119,13 @@ class Chess:
         self.screen.fill((255,128,64))
         pygame.display.update()
     
+    def drawPartBackground(self,pos):
+        x,y=self.findPosInScreen(pos)
+        pygame.draw.circle(self.screen,(255,128,64),(x,y),14)
+        pygame.draw.line(self.screen,pygame.Color('black'),(x-14,y),(x+14,y),2)
+        pygame.draw.line(self.screen,pygame.Color('black'),(x,y-14),(x,y+14),2)
+        pygame.display.update()
+    
     #if player in pos wins, return True, else return False
     #Winning the game requires 5 pieces in the same color row in one line
     #search from (left,top) to (right,down) to judge whether the player wins
@@ -197,11 +204,7 @@ class Chess:
     def undoDrop(self):
         pos=self.pieceStack.pop()
         self.board[pos[0]][pos[1]]=0
-        x,y=self.findPosInScreen(pos)
-        pygame.draw.circle(self.screen,(255,128,64),(x,y),14)
-        pygame.draw.line(self.screen,pygame.Color('black'),(x-14,y),(x+14,y),2)
-        pygame.draw.line(self.screen,pygame.Color('black'),(x,y-14),(x,y+14),2)
-        pygame.display.update()
+        self.drawPartBackground(pos)
     
     def isInBoard(self,screenPos):
         x,y=screenPos

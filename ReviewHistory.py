@@ -12,6 +12,7 @@ def reviewGame(chess,gameTime):
     chess.chooseGame(gameTime)
     chess.drawBackground()
     chess.drawBoard()
+    Utility.showText(chess.screen,(700,383),50,'blue','上一步')
     Utility.showText(chess.screen,(700,453),50,'blue','下一步')
     Utility.showText(chess.screen,(700,523),50,'blue','返回')
     num=0
@@ -21,14 +22,23 @@ def reviewGame(chess,gameTime):
             if event.type==pygame.QUIT:
                 sys.exit()
             elif event.type==pygame.MOUSEBUTTONUP:
-                if Utility.isInRect(event.pos,(700,453,850,503)):
-                    chess.drawPiece(chess.findPosInScreen(chess.pieceStack[num]),num%2+1)
-                    print(chess.pieceStack[num])
-                    num+=1
+                #previous drop
+                if Utility.isInRect(event.pos,(700,383,850,423)):
+                    if num==0:
+                        messagebox.showinfo('提示','没有上一步了')
+                    else:
+                        num-=1
+                        chess.drawPartBackground(chess.pieceStack[num])
+
+                #next drop
+                elif Utility.isInRect(event.pos,(700,453,850,503)):
                     if num==len(chess.pieceStack):
-                        messagebox.showinfo('提示','没有下一手了')
-                        time.sleep(1)
-                        return
+                        messagebox.showinfo('提示','没有下一步了')
+                    else:
+                        chess.drawPiece(chess.findPosInScreen(chess.pieceStack[num]),num%2+1)
+                        num+=1
+                
+                #return to select games
                 elif Utility.isInRect(event.pos,(700,523,800,573)):
                     return
 
@@ -44,7 +54,7 @@ def showInfo(screen,gameList,page,gameSum):
         Utility.showText(screen,(125,70+40*(record-left)),30,'black',(' '*4).join(gameList[record]))
     return right-left+1
 
-#choose a specific game from datebase and review it
+#select a specific game from datebase and review it
 def main():
     pygame.init()
     screen=pygame.display.set_mode((900,600))

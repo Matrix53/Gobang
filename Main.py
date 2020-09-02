@@ -4,6 +4,7 @@ import sys
 import Utility
 import StartGame
 import PlayInOnePC
+import PlayWithAI
 import PlayInLAN
 import WatchVideo
 import ReviewHistory
@@ -16,8 +17,13 @@ while True:
             sys.exit()
         elif event.type==pygame.MOUSEBUTTONUP:
             #mode:play in one PC
-            if Utility.isInRect(event.pos,(115,100,395,170)):
+            if Utility.isInRect(event.pos,(115,0,395,70)):
                 PlayInOnePC.main()
+                StartGame.main()
+
+            #mode:play with AI
+            elif Utility.isInRect(event.pos,(115,100,395,170)):
+                PlayWithAI.main()
                 StartGame.main()
 
             #mode:play in LAN
