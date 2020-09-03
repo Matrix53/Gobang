@@ -294,14 +294,14 @@ class Chess:
     def getValOfPos(self,pos,player):
         x,y=pos
         sum=0
-        sum+=self.valJudge[player-1][self.getPieceStr((x,y-3),(x,y-1))]
-        sum+=self.valJudge[player-1][self.getPieceStr((x-3,y-3),(x-1,y-1))]
-        sum+=self.valJudge[player-1][self.getPieceStr((x-3,y),(x-1,y))]
-        sum+=self.valJudge[player-1][self.getPieceStr((x-3,y+3),(x-1,y+1))]
-        sum+=self.valJudge[player-1][self.getPieceStr((x,y+3),(x,y+1))]
-        sum+=self.valJudge[player-1][self.getPieceStr((x+3,y+3),(x+1,y+1))]
-        sum+=self.valJudge[player-1][self.getPieceStr((x+3,y),(x+1,y))]
-        sum+=self.valJudge[player-1][self.getPieceStr((x+3,y-3),(x+1,y-1))]
+        sum+=self.valJudge[player-1][self.getPieceStr((x,y-4),(x,y-1))]
+        sum+=self.valJudge[player-1][self.getPieceStr((x-4,y-4),(x-1,y-1))]
+        sum+=self.valJudge[player-1][self.getPieceStr((x-4,y),(x-1,y))]
+        sum+=self.valJudge[player-1][self.getPieceStr((x-4,y+4),(x-1,y+1))]
+        sum+=self.valJudge[player-1][self.getPieceStr((x,y+4),(x,y+1))]
+        sum+=self.valJudge[player-1][self.getPieceStr((x+4,y+4),(x+1,y+1))]
+        sum+=self.valJudge[player-1][self.getPieceStr((x+4,y),(x+1,y))]
+        sum+=self.valJudge[player-1][self.getPieceStr((x+4,y-4),(x+1,y-1))]
         return sum
 
     #get a string of pieces from pos1 to pos2
@@ -309,8 +309,8 @@ class Chess:
         ansStr=''
         x1,y1=pos1
         x2,y2=pos2
-        deltaX,deltaY=(x2-x1)//2,(y2-y1)//2
-        for step in range(0,3):
+        deltaX,deltaY=(x2-x1)//3,(y2-y1)//3
+        for step in range(0,4):
             if x1<0 or x1>14 or y1<0 or y1>14:
                 ansStr+='3'
             else:
