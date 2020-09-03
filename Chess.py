@@ -92,7 +92,7 @@ class Chess:
                 self.drawPiece(screenPos,self.board[x][y])
 
     def drawPlayer(self,player,playerName=''):
-        font=pygame.font.SysFont('华文行楷',30)
+        font=pygame.font.Font(os.getcwd()+'\source\\font\华文行楷.ttf',30)
 
         pygame.draw.rect(self.screen,(255,128,64),pygame.Rect(650,27,180,30))
         if player==1:
@@ -108,7 +108,7 @@ class Chess:
         pygame.display.update()
 
     def drawWinner(self,player,playerName=''):
-        font=pygame.font.SysFont('华文行楷',100)
+        font=pygame.font.Font(os.getcwd()+'\source\\font\华文行楷.ttf',100)
         if player==1:
             winnerText=font.render('黑方胜',True,pygame.Color('red'))
         else:
@@ -116,7 +116,7 @@ class Chess:
         self.screen.blit(winnerText,(177,127))
 
         if playerName!='':
-            font=pygame.font.SysFont('华文行楷',40)
+            font=pygame.font.Font(os.getcwd()+'\source\\font\华文行楷.ttf',40)
             playerText=font.render('玩家:'+playerName,True,pygame.Color('blue'))
             self.screen.blit(playerText,(177,237))
 

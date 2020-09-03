@@ -3,6 +3,7 @@ import sys
 import time
 import socket
 import tkinter
+import os
 from tkinter import messagebox
 
 import Utility
@@ -53,7 +54,7 @@ def main():
     print('游戏开始!')
     chess.drawBackground()
     chess.drawBoard()
-    font=pygame.font.SysFont('华文行楷',50)
+    font=pygame.font.Font(os.getcwd()+'\source\\font\华文行楷.ttf',50)
     returnText=font.render('返回',True,pygame.Color('black'))
     screen.blit(returnText,(700,523))
     undoText=font.render('悔棋',True,pygame.Color('black'))

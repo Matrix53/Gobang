@@ -1,4 +1,5 @@
 import pygame
+import os
 
 '''
 Pygame has the function to finish the task
@@ -25,7 +26,7 @@ color:a string. Determine the color of the text
 textfont:华文行楷
 '''
 def showText(screen,screenPos,size,color,text):
-    font=pygame.font.SysFont('华文行楷',size)
+    font=pygame.font.Font(os.getcwd()+'\source\\font\华文行楷.ttf',size)
     textSurface=font.render(text,True,pygame.Color(color))
     screen.blit(textSurface,screenPos)
     pygame.display.update()
