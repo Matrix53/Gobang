@@ -2,6 +2,7 @@ import pygame
 import tkinter
 import sys
 import time
+import os
 from tkinter import messagebox
 
 import Chess
@@ -44,14 +45,15 @@ def reviewGame(chess,gameTime):
 
 #show game info on the screen
 def showInfo(screen,gameList,page,gameSum):
-    screen.fill(pygame.Color('white'))
-    Utility.showText(screen,(100,485),70,'blue','上一页')
-    Utility.showText(screen,(370,485),70,'blue','下一页')
-    Utility.showText(screen,(660,485),70,'blue','返回')
+    bgImg=pygame.image.load(os.getcwd()+'\source\img\sunset.jpg')
+    screen.blit(bgImg,(0,0))
+    Utility.showText(screen,(100,485),70,'white','上一页')
+    Utility.showText(screen,(370,485),70,'white','下一页')
+    Utility.showText(screen,(660,485),70,'white','返回')
     left=(page-1)*10
     right=min(left+9,gameSum-1)
     for record in range(left,right+1):
-        Utility.showText(screen,(125,70+40*(record-left)),30,'black',(' '*4).join(gameList[record]))
+        Utility.showText(screen,(125,70+40*(record-left)),30,'white',(' '*4).join(gameList[record]))
     return right-left+1
 
 #select a specific game from datebase and review it

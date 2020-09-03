@@ -1,5 +1,6 @@
 import pygame
 import sys
+import os
 
 #show text in the screenPos of screen
 #size:70 font:华文行楷 color:white range:(x,y) to (x+70*numOfWords,y+70)
@@ -12,7 +13,8 @@ def main():
     pygame.init()
     screen=pygame.display.set_mode((500,600))
     pygame.display.set_caption('开始界面')
-    screen.fill(pygame.Color('blue'))
+    bgImg=pygame.image.load(os.getcwd()+'\source\img\star.jpg')
+    screen.blit(bgImg,(0,0))
 
     font=pygame.font.SysFont('华文行楷',70)
     showText(screen,'单机对战',(115,0),font)

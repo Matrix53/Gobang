@@ -4,6 +4,7 @@ import webbrowser
 import pygame
 import sys
 import random
+import os
 from bs4 import BeautifulSoup
 
 import Utility
@@ -17,15 +18,16 @@ screen:A screen surface which you want to show info in
 return:A website URL(str) list corresponds to the info
 '''
 def refreshInfo(screen):
-    screen.fill(pygame.Color('white'))
-    Utility.showText(screen,(210,485),70,'blue','刷新')
-    Utility.showText(screen,(550,485),70,'blue','返回')
+    bgImg=pygame.image.load(os.getcwd()+'\source\img\\night.jpg')
+    screen.blit(bgImg,(0,0))
+    Utility.showText(screen,(210,485),70,'white','刷新')
+    Utility.showText(screen,(550,485),70,'white','返回')
     page=str(random.randint(1,50))
     webSourceCode=requests.get('https://search.bilibili.com/video?keyword=五子棋&page='+page).text
     webSoup=BeautifulSoup(webSourceCode,'lxml')
     webList=[]
     for tag in webSoup.find_all(attrs={'target':"_blank",'class':"img-anchor"}):
-        Utility.showText(screen,(50,100+len(webList)*35),25,'black',tag.attrs['title'][:30])
+        Utility.showText(screen,(50,100+len(webList)*35),25,'white',tag.attrs['title'][:30])
         webList.append(tag.attrs['href'].strip('/'))
         if len(webList)>=10:
             break
