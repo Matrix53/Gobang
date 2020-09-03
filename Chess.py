@@ -60,6 +60,11 @@ class Chess:
         self.dbCon=sqlite3.connect(os.getcwd()+'\source\\record\PlayHistory.db')
         self.dbCur=self.dbCon.cursor()
         self.valJudge=[]
+        self.blackPiece=pygame.image.load(os.getcwd()+'\source\img\\blackStone.png')
+        self.whitePiece=pygame.image.load(os.getcwd()+'\source\img\\whiteStone.png')
+        self.boardImg=pygame.image.load(os.getcwd()+'\source\img\\board.png')
+        pygame.mixer.music.set_volume(1)
+        pygame.mixer.music.load(os.getcwd()+'\source\sound\drop.wav')
 
     #Close the connection to database
     def __del__(self):
@@ -71,12 +76,14 @@ class Chess:
         pygame.display.update()
 
     def drawPiece(self,screenPos,player):
+        x,y=screenPos
         if player==0:
             return
         elif player==1:
-            pygame.draw.circle(self.screen,pygame.Color('black'),screenPos,14)
+            self.screen.blit(self.blackPiece,(x-14,y-14))
         else:
-            pygame.draw.circle(self.screen,pygame.Color('white'),screenPos,14)
+            self.screen.blit(self.whitePiece,(x-14,y-14))
+        pygame.mixer.music.play()
         pygame.display.update()
     
     def drawAllPieces(self):
@@ -119,13 +126,14 @@ class Chess:
     #fill background with special brown
     def drawBackground(self):
         self.screen.fill((255,128,64))
+        self.screen.blit(self.boardImg,(40,13))
         pygame.display.update()
     
     def drawPartBackground(self,pos):
         x,y=self.findPosInScreen(pos)
-        pygame.draw.circle(self.screen,(255,128,64),(x,y),14)
-        pygame.draw.line(self.screen,pygame.Color('black'),(x-14,y),(x+14,y),2)
-        pygame.draw.line(self.screen,pygame.Color('black'),(x,y-14),(x,y+14),2)
+        self.screen.blit(self.boardImg,(x-15,y-15),pygame.Rect(x-55,y-28,30,30))
+        pygame.draw.line(self.screen,pygame.Color('black'),(x-15,y),(x+15,y),2)
+        pygame.draw.line(self.screen,pygame.Color('black'),(x,y-15),(x,y+15),2)
         pygame.display.update()
     
     #if player in pos wins, return True, else return False

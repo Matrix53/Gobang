@@ -54,7 +54,7 @@ def main():
                             continue
                         chess.dropPiece(pos,1 if isBlack else 2)
                         if chess.isWinner(pos):
-                            if isblack:
+                            if isBlack:
                                 chess.drawWinner(1)
                                 chess.recordGame('人机对战','我方执黑','黑方胜')
                             else:
