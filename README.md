@@ -1,17 +1,19 @@
-# Introduction of repo
-This repo inplement a Gobang game as my homework to a BUAA programing course. The game will be written in python and use modules like pygame, sqlite3 and etc. All are welcome to enjoy the game or improve it after I finish my homework. And of course you can help me with my homework if you want. ( :
+# Gobang
 
-# Software function
+## Introduction
+This repo implement a Gobang game as my homework to a BUAA programing course. The game will be written in python and use modules like pygame, sqlite3 and etc. All are welcome to enjoy the game or improve it after I finish my homework. And of course you can help me with my homework if you want. ( :
 
-## Basic function
+## Requirement
+
+### Basic Requirement
 
 > 1.Play Gobang game in one PC
 >
 > 2.Get the rules of Gobang before play(deleted)
 
-## Extension function
+### Extra Requirement
 
-These function is challenging for me to inplement because of the homework time limit, but I will try my best.
+These requirements are challenging for me to implement because of the homework time limit, but I will try my best.
 
 > 1.Use SQLite3 to record the Gobang games that players played
 >
@@ -23,9 +25,9 @@ These function is challenging for me to inplement because of the homework time l
 >
 > 5.Offer some video about Gobang to players
 
-# Code instruction
+## Development
 
-## Environment in my PC
+### Environment
 
 > python:3.7.8
 >
@@ -41,13 +43,13 @@ These function is challenging for me to inplement because of the homework time l
 >
 > System:Windows10
 
-If you want to form a program with postfix '.exe', you may need:
+If you want to produce a program with postfix '.exe', you may need:
 
 > pyinstaller:4.0
 >
 > pywin32:228
 
-## Document instruction
+### Code Structure
 
 >Chess.py:include the chess class
 >
@@ -67,7 +69,7 @@ If you want to form a program with postfix '.exe', you may need:
 >
 >ReviewHistory.py:implement the function of reviewing the play history
 
-# Known problem
+## Known Problems
 
 > 1.(PlayInLAN mode)Because the program uses UDP to communicate, player may wait the opponent to operate. In this case, the program will be unresponsive.
 >
